@@ -9,6 +9,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/users")
+
 public class UserController {
 //    @Autowired
     private final UserService userService;
@@ -17,7 +19,8 @@ public class UserController {
 //        this.userService = userService;
 //    }
 
-    @GetMapping("/api/users")
+    @GetMapping
+    //@RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers(){
 
         return new ResponseEntity<>(userService.fetchAllUsers(), HttpStatus.OK);
@@ -25,7 +28,7 @@ public class UserController {
         // return ResponseEntity.ok(userService.fetchAllUsers());
     }
 
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id){
 //        User user = userService.fetchUser(id);
 //        if(user == null)
@@ -37,19 +40,19 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/api/users")
+    @PostMapping
     public ResponseEntity<String> createUser(@RequestBody User user){
         userService.addUser(user);
         return ResponseEntity.ok("User Added Successfully!");
     }
 
-    @PutMapping("/api/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatedUser(@PathVariable Long id,
                                               @RequestBody User updatedUser){
 
         boolean updated = userService.updateUser(id, updatedUser);
         if(updated)
-            return ResponseEntity.ok("User added Successfully!");
+            return ResponseEntity.ok("User updated Successfully!");
         return ResponseEntity.notFound().build();
     }
 
